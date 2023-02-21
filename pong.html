@@ -1,29 +1,65 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Basic Pong HTML Game</title>
   <link rel="stylesheet" href="style.css">
   <meta charset="UTF-8">
 </head>
-  
+
 <body>
-  <div id="overModal" class="modal">
-   <div class="modal-content">
-   <p> Game Over! </p>
-   <button class="startOver" onclick="startOver();">Start Over</button>
-   </div>
-  </div>
-  <div class="row">
-  <div class="col-lg-12">
-    <row>
- <h1 id="scoreboard" style="color: white;text-align:center;border-style:solid;border-color:white">Player 1: 0           Player 2: 0</h1>
-  </div>
-    </row>
-  <div class="row">
-  <div class="col-lg-12">
-<canvas width="750" height="585" id="game"></canvas>
+
+  <div class="start-game modal">
+    <div class="modal-content">
+      <h1>Main Menu</h1>
+      <div class="name-player">
+        <label for="name">Enter Your Name:</label>
+        <input type="text" id="name">
+      </div>
+      <div class="colors">
+        <p>Select a color:</p>
+        <button class="yellow"></button>
+        <button class="blue"></button>
+        <button class="red"></button>
+        <button class="green"></button>
+        <button class="white"></button>
+        <button class="purple"></button>
+      </div>
+
+      <div>
+        <button id="play">Play</button>
+      </div>
     </div>
-    </row>
+  </div>
+
+  <div id="overModal" class="modal">
+    <div class="modal-content">
+      <p> Game Over! </p>
+      <button class="startOver" onclick="startOver();">Start Over</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 id="scoreboard" >
+        <div class="scorePlayer">
+          <span>Computer: </span>
+          <span id="computer-score">0</span>
+        </div>
+
+        <div class="scorePlayer">
+          <span id="name-player">Player 2:</span>
+          <span id="rightPlayer-score">0</span>
+        </div>
+      </h1>
+
+    </div>
+    <div class="col-lg-12">
+      <canvas width="750" height="585" id="game"></canvas>
+    </div>
+  </div>
+
 </body>
+
 </html>
 <script src="Script.js"></script>
