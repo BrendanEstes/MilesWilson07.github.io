@@ -3,10 +3,15 @@ const context = canvas.getContext("2d");
 const grid = 15;
 const paddleHeight = grid * 5; // 80
 const maxPaddleY = canvas.height - grid - paddleHeight;
+
+var paddleSpeed = 3;
+var ballSpeed = 2.5;
+
+let mSound1 = new Audio('tennis-smash-100733.mp3');
+let mSound2 = new Audio('high-zcore-96686.mp3');
+let mSound3 = new Audio('videogame-death-sound-43894.mp3');
 const maxPaddleX = 600;
 
-var paddleSpeed = 4.8;
-var ballSpeed = 5;
 var player1Score = 0;
 var player2Score = 0;
 context.fillText(
@@ -14,6 +19,7 @@ context.fillText(
   500,
   100
 );
+
 
 const leftPaddle = {
   // start in the middle of the game on the left side
@@ -156,8 +162,11 @@ function loop() {
   }
 
   // reset ball if it goes past paddle (but only if we haven't already done so)
-  if ((ball.x < 0 || ball.x > canvas.width) && !ball.resetting) {
-    if (ball.x < 0) {
+
+  if ( (ball.x < 0 || ball.x > canvas.width) && !ball.resetting) {
+    if(ball.x < 0)
+    {
+      mSound2.play();
       player2Score++;
 
        // new - used to adjust speed based on how good player is doing.
@@ -171,7 +180,10 @@ function loop() {
 
 
     }
-    if (ball.x > canvas.width) {
+
+if(ball.x > canvas.width)
+    {
+      mSound2.play();
       player1Score++;
 	
 	// new - used to adjust speed based on how bad player is doing.
@@ -190,13 +202,14 @@ function loop() {
     
     ball.resetting = true;
 
-    // stop if score past 7
-    if (player2Score >= 7 || player1Score >= 7) {
-      ball.dy = 0;
-      leftPaddle.dy = 0;
-      rightPaddle.dy = 0;
-      return gameOver();
-    }
+// stop if score past 7
+if (player2Score >= 7 || player1Score >= 7) {
+	ball.dy = 0;
+	leftPaddle.dy = 0;
+	rightPaddle.dy = 0;
+  mSound3.play();
+	return gameOver();
+}
 
     // give some time for the player to recover before launching the ball again
     setTimeout(() => {
@@ -208,12 +221,17 @@ function loop() {
 
   // check to see if ball collides with paddle. if they do change x velocity
   if (collides(ball, leftPaddle)) {
+    mSound1.play();
     ball.dx *= -1;
 
     // move ball next to the paddle otherwise the collision will happen again
     // in the next frame
     ball.x = leftPaddle.x + leftPaddle.width;
-  } else if (collides(ball, rightPaddle)) {
+
+  }
+  else if (collides(ball, rightPaddle)) {
+    mSound1.play();
+
     ball.dx *= -1;
 
     // move ball next to the paddle otherwise the collision will happen again
