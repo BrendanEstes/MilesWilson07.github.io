@@ -4,6 +4,7 @@ const context = canvas.getContext('2d');
 const grid = 15;
 const paddleHeight = grid * 5; // 80
 const maxPaddleY = canvas.height - grid - paddleHeight;
+const maxPaddleX = 600;
 
 var paddleSpeed = 3;
 var ballSpeed = 2.5;
@@ -30,7 +31,10 @@ const rightPaddle = {
   height: paddleHeight,
 
   // paddle velocity
-  dy: 0
+  dy: 0,
+  // new - to set x velocity as 0 at first
+  dx: 0
+
 };
 const ball = {
   // start in the middle of the game
@@ -76,6 +80,11 @@ function loop() {
   leftPaddle.y += leftPaddle.dy;
   rightPaddle.y += rightPaddle.dy;
 
+  // new - used to move right paddle by x velocity
+  rightPaddle.x += rightPaddle.dx;
+
+
+
   // prevent paddles from going through walls
   if (leftPaddle.y < grid) {
     leftPaddle.y = grid;
@@ -90,6 +99,22 @@ function loop() {
   else if (rightPaddle.y > maxPaddleY) {
     rightPaddle.y = maxPaddleY;
   }
+
+
+
+
+// new - used to stop paddle from going too far left or right
+ if (rightPaddle.x > 730) {
+    rightPaddle.x = 730;
+  }
+  
+  if (rightPaddle.x < maxPaddleX) {
+    rightPaddle.x = maxPaddleX;
+  }
+
+
+
+
 
   // draw paddles
   context.fillStyle = 'white';
@@ -125,10 +150,30 @@ function loop() {
     if(ball.x < 0)
     {
       player2Score++;
+
+       // new - used to adjust speed based on how good player is doing.
+      if (player2Score % 2 == 0 && player2Score != 0) {
+	 paddleSpeed = paddleSpeed + paddleSpeed * .15;
+ 	ballSpeed = ballSpeed + ballSpeed * .15;
+	 ball.dx = ballSpeed;
+	 ball.dy = -ballSpeed;
+	}
+
+
+
     }
     if(ball.x > canvas.width)
     {
       player1Score++;
+	
+	// new - used to adjust speed based on how bad player is doing.
+        if (player1Score % 2 == 0 && player1Score != 0) {
+	 paddleSpeed = paddleSpeed - paddleSpeed * .15;
+ 	ballSpeed = ballSpeed - ballSpeed * .15;
+	 ball.dx = ballSpeed;
+	 ball.dy = -ballSpeed;
+	}
+
     }
     console.log("here");
     console.log(player1Score);
@@ -179,6 +224,15 @@ if (player2Score >= 7 || player1Score >= 7) {
   for (let i = grid; i < canvas.height - grid; i += grid * 2) {
     context.fillRect(canvas.width / 2 - grid / 2, i, grid, grid);
   }
+
+
+ // new -  draw dotted line at ~600 to limit paddle horizontal movement
+ for (let i = grid; i < canvas.height - grid; i += grid * 2) {
+    context.fillRect(590, i, 10, 10);
+  }
+
+
+
 }
 
 // listen to keyboard events to move the paddles
@@ -193,6 +247,16 @@ document.addEventListener('keydown', function(e) {
     rightPaddle.dy = paddleSpeed;
   }
 
+
+  // new - used for left and right arrows
+  if (e.which === 37) {
+    rightPaddle.dx = -paddleSpeed;
+  }
+  else if (e.which === 39) {
+    rightPaddle.dx = paddleSpeed;
+  }
+
+
 });
 
 // listen to keyboard events to stop the paddle if key is released
@@ -204,6 +268,14 @@ document.addEventListener('keyup', function(e) {
   if (e.which === 83 || e.which === 87) {
     leftPaddle.dy = 0;
   }
+
+
+  // new - used to check for left and right arrows
+  if (e.which === 37 || e.which === 39) {
+    rightPaddle.dx = 0;
+  }
+
+
 });
 
 // start the game
