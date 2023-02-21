@@ -11,6 +11,9 @@ var player1Score=0;
 var player2Score=0;
 context.fillText("The score is " + player1Score +" to " + player2Score, 500, 100);
 
+let mSound1 = new Audio('tennis-smash-100733.mp3');
+let mSound2 = new Audio('high-zcore-96686.mp3');
+let mSound3 = new Audio('videogame-death-sound-43894.mp3');
 
 const leftPaddle = {
   // start in the middle of the game on the left side
@@ -124,10 +127,12 @@ function loop() {
   if ( (ball.x < 0 || ball.x > canvas.width) && !ball.resetting) {
     if(ball.x < 0)
     {
+      mSound2.play();
       player2Score++;
     }
     if(ball.x > canvas.width)
     {
+      mSound2.play();
       player1Score++;
     }
     console.log("here");
@@ -140,6 +145,7 @@ if (player2Score >= 7 || player1Score >= 7) {
 	ball.dy = 0;
 	leftPaddle.dy = 0;
 	rightPaddle.dy = 0;
+  mSound3.play();
 	return gameOver();
 }
 
@@ -153,6 +159,7 @@ if (player2Score >= 7 || player1Score >= 7) {
 
   // check to see if ball collides with paddle. if they do change x velocity
   if (collides(ball, leftPaddle)) {
+    mSound1.play();
     ball.dx *= -1;
 
     // move ball next to the paddle otherwise the collision will happen again
@@ -160,6 +167,7 @@ if (player2Score >= 7 || player1Score >= 7) {
     ball.x = leftPaddle.x + leftPaddle.width;
   }
   else if (collides(ball, rightPaddle)) {
+    mSound1.play();
     ball.dx *= -1;
 
     // move ball next to the paddle otherwise the collision will happen again
