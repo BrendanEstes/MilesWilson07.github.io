@@ -173,8 +173,8 @@ function loop() {
       if (player2Score % 2 == 0 && player2Score != 0) {
 	 paddleSpeed = paddleSpeed + paddleSpeed * .15;
  	ballSpeed = ballSpeed + ballSpeed * .15;
-	 ball.dx = ballSpeed;
-	 ball.dy = -ballSpeed;
+	 ball.dx = -ballSpeed;
+	 ball.dy = ballSpeed;
 	}
 
 
@@ -202,8 +202,8 @@ if(ball.x > canvas.width)
     
     ball.resetting = true;
 
-// stop if score past 7
-if (player2Score >= 7 || player1Score >= 7) {
+// stop if score past 10
+if (player2Score >= 10 || player1Score >= 10) {
 	ball.dy = 0;
 	leftPaddle.dy = 0;
 	rightPaddle.dy = 0;
